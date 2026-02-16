@@ -3,7 +3,7 @@ param($docxPath, $outputPath)
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 $zip = [System.IO.Compression.ZipFile]::OpenRead($docxPath)
-$entry = $zip.Entries | Where-Object { $_.FullName -eq "word/document.xml" }
+$entry = $zip.Entries | Where-Object { $_.FullName -eq "word/document." }
 
 if ($entry) {
     $stream = $entry.Open()
