@@ -1,0 +1,2505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseño Preliminar - Super App Transporte + TechMarket AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --dark-light: #334155;
+            --gray: #64748b;
+            --gray-light: #94a3b8;
+            --light: #f1f5f9;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-secondary: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navegación */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            padding: 100px 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transform: rotate(-15deg);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .cards-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .preview-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .preview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-card i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-card p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Secciones */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 1.125rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-4px);
+            border-color: var(--primary-light);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon.primary { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+        .card-icon.secondary { background: rgba(16, 185, 129, 0.1); color: var(--secondary); }
+        .card-icon.accent { background: rgba(245, 158, 11, 0.1); color: var(--accent); }
+        .card-icon.danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+
+        .card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Arquitectura */
+        .architecture-container {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .architecture-diagram {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .arch-layer {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .arch-layer-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .arch-components {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .arch-component {
+            background: var(--white);
+            border: 2px solid var(--primary-light);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .arch-component:hover {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .arch-connector {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        /* Stack Tecnológico */
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .tech-item {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            box-shadow: var(--shadow);
+            transform: translateX(5px);
+        }
+
+        .tech-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            background: var(--gradient-primary);
+            color: var(--white);
+        }
+
+        .tech-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .tech-info span {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Tablas */
+        .table-container {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light);
+            font-size: 0.9rem;
+        }
+
+        tr:hover td {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Workflow */
+        .workflow-container {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .workflow-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .workflow-step {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .workflow-arrow {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .workflow-branch {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 2px dashed var(--gray-light);
+            border-radius: 10px;
+        }
+
+        .workflow-branch-item {
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Mockups de Pantallas */
+        .phone-mockup {
+            max-width: 380px;
+            margin: 0 auto;
+            background: var(--dark);
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .phone-screen {
+            background: var(--white);
+            border-radius: 30px;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .phone-header {
+            background: var(--gradient-primary);
+            padding: 3rem 1.5rem 1.5rem;
+            color: var(--white);
+        }
+
+        .phone-header h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .phone-content {
+            padding: 1.5rem;
+        }
+
+        .metric-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .metric-change {
+            font-size: 0.75rem;
+            color: var(--secondary);
+        }
+
+        .phone-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 1rem;
+            border-top: 1px solid var(--light);
+            background: var(--white);
+        }
+
+        .phone-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--gray);
+            font-size: 0.7rem;
+        }
+
+        .phone-nav-item.active {
+            color: var(--primary);
+        }
+
+        .phone-nav-item i {
+            font-size: 1.25rem;
+        }
+
+        /* Mockups Grid */
+        .mockups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Timeline / Roadmap */
+        .roadmap {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .roadmap-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 1.75rem;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .roadmap-phase {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .roadmap-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+
+        .roadmap-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .roadmap-tag {
+            background: var(--light);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--dark-light);
+        }
+
+        .roadmap-success {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 8px;
+            color: var(--secondary-dark);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* KPIs */
+        .kpis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .kpi-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .kpi-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        /* Modelo de Datos */
+        .er-diagram {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            overflow-x: auto;
+        }
+
+        .er-entities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .er-entity {
+            border: 2px solid var(--primary-light);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .er-entity-header {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .er-entity-fields {
+            padding: 0.75rem 1rem;
+        }
+
+        .er-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.35rem 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .er-field:last-child {
+            border-bottom: none;
+        }
+
+        .er-field-name {
+            color: var(--dark);
+        }
+
+        .er-field-type {
+            color: var(--gray);
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+
+        .er-pk {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .er-fk {
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        /* Seguridad */
+        .security-layers {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .security-layer {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .security-number {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .security-content h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .security-content ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .security-content li {
+            background: var(--light);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--dark-light);
+        }
+
+        /* IA Features */
+        .ia-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ia-feature {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .ia-feature-header {
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ia-feature-header.high {
+            background: rgba(16, 185, 129, 0.1);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .ia-feature-header.medium {
+            background: rgba(245, 158, 11, 0.1);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .ia-feature-header.excluded {
+            background: rgba(239, 68, 68, 0.1);
+            border-bottom: 3px solid var(--danger);
+        }
+
+        .ia-feature-header i {
+            font-size: 1.25rem;
+        }
+
+        .ia-feature-header.high i { color: var(--secondary); }
+        .ia-feature-header.medium i { color: var(--accent); }
+        .ia-feature-header.excluded i { color: var(--danger); }
+
+        .ia-feature-header h4 {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .ia-feature-body {
+            padding: 1.25rem;
+        }
+
+        .ia-feature-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--dark-light);
+        }
+
+        .ia-feature-item i {
+            color: var(--primary);
+            margin-top: 0.25rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer p {
+            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-meta span {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .phone-mockup {
+                max-width: 100%;
+            }
+
+            .roadmap {
+                padding-left: 2rem;
+            }
+
+            .mockups-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll suave */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Principios Quote */
+        .quote-box {
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            color: var(--white);
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.25rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 6rem;
+            opacity: 0.2;
+            font-family: serif;
+        }
+
+        /* Checklist */
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .checklist-item i {
+            color: var(--secondary);
+        }
+
+        .checklist-item span {
+            font-size: 0.9rem;
+            color: var(--dark-light);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Comparison Table */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .comparison-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .comparison-card.dont {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--danger);
+        }
+
+        .comparison-card.do {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--secondary);
+        }
+
+        .comparison-card h4 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comparison-card.dont h4 { color: var(--danger); }
+        .comparison-card.do h4 { color: var(--secondary); }
+
+        .comparison-card ul {
+            list-style: none;
+        }
+
+        .comparison-card li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--dark-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .comparison-card.dont li::before {
+            content: '✗';
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .comparison-card.do li::before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .code-block code {
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .code-block .keyword { color: #c792ea; }
+        .code-block .string { color: #c3e88d; }
+        .code-block .comment { color: #676e95; }
+        .code-block .type { color: #ffcb6b; }
+
+        /* Proceso Steps */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .process-step {
+            position: relative;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .process-step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 35px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .process-step h4 {
+            margin: 1rem 0 0.5rem;
+            color: var(--dark);
+        }
+
+        .process-step p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">SuperApp + TechMarket</div>
+            <ul class="nav-links">
+                <li><a href="#inicio" class="active">Inicio</a></li>
+                <li><a href="#arquitectura">Arquitectura</a></li>
+                <li><a href="#embajadores">Embajadores</a></li>
+                <li><a href="#iam">IAM</a></li>
+                <li><a href="#catalogo">Catálogo</a></li>
+                <li><a href="#tickets">Tickets</a></li>
+                <li><a href="#ia">Motor IA</a></li>
+                <li><a href="#pantallas">Pantallas</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#kpis">KPIs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Diseño Preliminar Completo</h1>
+            <p class="subtitle">Super App Transporte + Delivery & TechMarket AI<br>Sistema Operativo Social + Comercial para Bolivia y Latinoamérica</p>
+            
+            <div class="badge-group">
+                <span class="badge"><i class="fas fa-calendar"></i> Febrero 2026</span>
+                <span class="badge"><i class="fas fa-rocket"></i> Lanzamiento: Abril 2026</span>
+                <span class="badge"><i class="fas fa-map-marker-alt"></i> Santa Cruz, Bolivia</span>
+            </div>
+
+            <div class="cards-preview">
+                <div class="preview-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Super App Transporte</h3>
+                    <p>App unificada tipo Uber + PedidosYa con modelo de embajadores y comisiones por impacto real</p>
+                </div>
+                <div class="preview-card">
+                    <i class="fas fa-microchip"></i>
+                    <h3>TechMarket AI</h3>
+                    <p>Plataforma de electrónica con motor de compatibilidad, tickets técnicos e IA aplicada</p>
+                </div>
+                <div class="preview-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Modelo Embajadores</h3>
+                    <p>Ganancias por impacto económico verificable, sin estigma MLM, 3 niveles de comisión</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Principios -->
+    <section class="section">
+        <div class="section-header">
+            <span class="tag">Visión</span>
+            <h2 class="section-title">Principios Fundamentales</h2>
+        </div>
+
+        <div class="quote-box">
+            "No vendemos entregas ni viajes, vendemos ingresos, visibilidad, control y crecimiento"
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon primary"><i class="fas fa-chart-line"></i></div>
+                <h3>Impacto Verificable</h3>
+                <p>El embajador gana por impacto económico real, no por reclutar personas. Cada comisión está respaldada por actividad medible.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon secondary"><i class="fas fa-eye"></i></div>
+                <h3>Transparencia Total</h3>
+                <p>Cálculos de comisiones completamente auditables. Ledger financiero inmutable con trazabilidad completa.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon accent"><i class="fas fa-handshake"></i></div>
+                <h3>Sin Estigma MLM</h3>
+                <p>Lenguaje de "Partners Económicos". Sin rankings públicos, sin niveles visuales tipo oro/diamante.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon danger"><i class="fas fa-brain"></i></div>
+                <h3>IA con Valor Real</h3>
+                <p>Inteligencia artificial que genera conversiones, no decorativa. Comenzamos con reglas inteligentes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon primary"><i class="fas fa-building"></i></div>
+                <h3>Multi-tenant Día 1</h3>
+                <p>Arquitectura diseñada para múltiples negocios desde el inicio con aislamiento de datos robusto.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Arquitectura -->
+    <section class="section" id="arquitectura" style="background: var(--white); margin: 0; max-width: 100%; padding: 5rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <span class="tag">Técnico</span>
+                <h2 class="section-title">Arquitectura General del Sistema</h2>
+                <p class="section-subtitle">Ecosistema completo con microservicios, multi-tenant y motor de IA integrado</p>
+            </div>
+
+            <div class="architecture-container">
+                <div class="architecture-diagram">
+                    <!-- Capa de Aplicaciones -->
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">
+                            <i class="fas fa-mobile-alt"></i> Capa de Aplicaciones
+                        </div>
+                        <div class="arch-components">
+                            <div class="arch-component"><i class="fas fa-user"></i> App Cliente (Móvil)</div>
+                            <div class="arch-component"><i class="fas fa-store"></i> App Negocio (Móvil + Web)</div>
+                            <div class="arch-component"><i class="fas fa-users"></i> App Embajador (Móvil)</div>
+                            <div class="arch-component"><i class="fas fa-cogs"></i> Backoffice (Web)</div>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector"><i class="fas fa-arrow-down"></i></div>
+
+                    <!-- API Gateway -->
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">
+                            <i class="fas fa-server"></i> API Gateway
+                        </div>
+                        <div class="arch-components">
+                            <div class="arch-component"><i class="fab fa-java"></i> Spring Boot</div>
+                            <div class="arch-component"><i class="fas fa-shield-alt"></i> Rate Limiting</div>
+                            <div class="arch-component"><i class="fas fa-key"></i> JWT Auth</div>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector"><i class="fas fa-arrow-down"></i></div>
+
+                    <!-- Microservicios -->
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">
+                            <i class="fas fa-cubes"></i> Microservicios Core
+                        </div>
+                        <div class="arch-components">
+                            <div class="arch-component"><i class="fas fa-lock"></i> IAM + Multi-tenant</div>
+                            <div class="arch-component"><i class="fas fa-box"></i> Catálogo</div>
+                            <div class="arch-component"><i class="fas fa-ticket-alt"></i> Tickets</div>
+                            <div class="arch-component"><i class="fas fa-users"></i> Embajadores</div>
+                            <div class="arch-component"><i class="fas fa-credit-card"></i> Transacciones</div>
+                            <div class="arch-component"><i class="fas fa-star"></i> Reputación</div>
+                            <div class="arch-component"><i class="fas fa-robot"></i> Motor IA</div>
+                        </div>
+                    </div>
+
+                    <div class="arch-connector"><i class="fas fa-arrow-down"></i></div>
+
+                    <!-- Datos -->
+                    <div class="arch-layer">
+                        <div class="arch-layer-title">
+                            <i class="fas fa-database"></i> Capa de Datos
+                        </div>
+                        <div class="arch-components">
+                            <div class="arch-component"><i class="fas fa-database"></i> PostgreSQL + RLS</div>
+                            <div class="arch-component"><i class="fas fa-leaf"></i> MongoDB</div>
+                            <div class="arch-component"><i class="fas fa-bolt"></i> Redis Cache</div>
+                            <div class="arch-component"><i class="fas fa-vector-square"></i> pgvector</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stack Tecnológico -->
+            <h3 style="margin: 3rem 0 1.5rem; font-size: 1.5rem;">Stack Tecnológico</h3>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <div class="tech-icon"><i class="fab fa-java"></i></div>
+                    <div class="tech-info">
+                        <h4>Spring Boot + Spring AI</h4>
+                        <span>Backend Enterprise-ready</span>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"><i class="fas fa-database"></i></div>
+                    <div class="tech-info">
+                        <h4>PostgreSQL + RLS</h4>
+                        <span>Multi-tenant con Row-Level Security</span>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"><i class="fas fa-leaf"></i></div>
+                    <div class="tech-info">
+                        <h4>MongoDB</h4>
+                        <span>Media y documentos flexibles</span>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="tech-info">
+                        <h4>Redis</h4>
+                        <span>Cache y sesiones</span>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"><i class="fab fa-react"></i></div>
+                    <div class="tech-info">
+                        <h4>React Native / Flutter</h4>
+                        <span>Mobile Cross-platform</span>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon"><i class="fas fa-stream"></i></div>
+                    <div class="tech-info">
+                        <h4>Kafka / RabbitMQ</h4>
+                        <span>Mensajería y eventos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Módulo Embajadores -->
+    <section class="section" id="embajadores">
+        <div class="section-header">
+            <span class="tag">Core</span>
+            <h2 class="section-title">Módulo de Embajadores</h2>
+            <p class="section-subtitle">Microservicio financiero-comercial independiente para visualizar, calcular, auditar y cobrar ingresos</p>
+        </div>
+
+        <!-- Características -->
+        <div class="cards-grid" style="margin-bottom: 3rem;">
+            <div class="card">
+                <div class="card-icon primary"><i class="fas fa-mobile-alt"></i></div>
+                <h3>App Independiente</h3>
+                <p>Aplicación separada con descarga independiente. No es requisito para usar los servicios del ecosistema.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon secondary"><i class="fas fa-layer-group"></i></div>
+                <h3>Multi-vertical</h3>
+                <p>Funciona para todos los negocios del ecosistema: restaurantes, conductores, usuarios, tiendas tech.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon accent"><i class="fas fa-coins"></i></div>
+                <h3>3 Niveles de Comisión</h3>
+                <p>Comisiones por impacto económico real en 3 niveles, calculadas sobre actividad verificable.</p>
+            </div>
+        </div>
+
+        <!-- Modelo de Atribución -->
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Modelo de Atribución</h3>
+        <div class="workflow-container" style="margin-bottom: 3rem;">
+            <h4 style="margin-bottom: 1rem; color: var(--primary);">Método Principal (Automático)</h4>
+            <div class="workflow-steps" style="margin-bottom: 2rem;">
+                <div class="workflow-step"><i class="fas fa-link"></i> Link/QR Único</div>
+                <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="workflow-step"><i class="fas fa-user-plus"></i> Registro Automático</div>
+                <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="workflow-step"><i class="fas fa-lock"></i> Atribución Bloqueada</div>
+            </div>
+
+            <h4 style="margin-bottom: 1rem; color: var(--gray);">Método Secundario (Respaldo)</h4>
+            <div class="workflow-steps" style="margin-bottom: 1.5rem;">
+                <div class="workflow-step" style="background: var(--gray);"><i class="fas fa-keyboard"></i> "¿Quién te invitó?"</div>
+                <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="workflow-step" style="background: var(--gray);"><i class="fas fa-check-circle"></i> Validación + Bloqueo</div>
+            </div>
+
+            <div style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: 10px; text-align: center;">
+                <strong style="color: var(--primary);"><i class="fas fa-exclamation-triangle"></i> Regla de Oro:</strong> 
+                <span>Una vez finalizado el registro, la atribución queda INMUTABLE</span>
+            </div>
+        </div>
+
+        <!-- Estructura de Comisiones -->
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Estructura de Comisiones</h3>
+        <div class="table-container" style="margin-bottom: 3rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Descripción</th>
+                        <th>Base de Cálculo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong style="color: var(--primary);">Nivel 1</strong></td>
+                        <td>Recomendaciones directas</td>
+                        <td>X% de ventas/ingresos generados por restaurantes, conductores y usuarios activos</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: var(--secondary);">Nivel 2</strong></td>
+                        <td>Recomendaciones de nivel 1</td>
+                        <td>Porcentaje menor sobre actividad económica</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: var(--accent);">Nivel 3</strong></td>
+                        <td>Recomendaciones de nivel 2</td>
+                        <td>Porcentaje aún menor sobre actividad</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Lo que NO se muestra -->
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Estrategia Anti-MLM</h3>
+        <div class="comparison-grid">
+            <div class="comparison-card dont">
+                <h4><i class="fas fa-times-circle"></i> NO Mostrar</h4>
+                <ul>
+                    <li>Árboles jerárquicos de red</li>
+                    <li>Niveles visuales (oro, diamante, platino)</li>
+                    <li>Rankings de top afiliados públicos</li>
+                    <li>Competencias entre embajadores</li>
+                    <li>Datos personales de la red</li>
+                </ul>
+            </div>
+            <div class="comparison-card do">
+                <h4><i class="fas fa-check-circle"></i> SÍ Mostrar</h4>
+                <ul>
+                    <li>Cantidad agregada por nivel</li>
+                    <li>Impacto económico en Bs</li>
+                    <li>Progreso personal vs. mes anterior</li>
+                    <li>Tendencias propias</li>
+                    <li>Métricas anónimas</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sistema IAM -->
+    <section class="section" id="iam" style="background: var(--white); margin: 0; max-width: 100%; padding: 5rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <span class="tag">Seguridad</span>
+                <h2 class="section-title">Sistema IAM y Multi-tenant</h2>
+                <p class="section-subtitle">Gestión de identidades, roles y aislamiento de datos por tenant</p>
+            </div>
+
+            <!-- Roles -->
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Roles del Sistema</h3>
+            <div class="cards-grid" style="margin-bottom: 3rem;">
+                <div class="card">
+                    <div class="card-icon primary"><i class="fas fa-building"></i></div>
+                    <h3>Roles de Tenant</h3>
+                    <div style="margin-top: 1rem;">
+                        <span class="roadmap-tag">TENANT_OWNER</span>
+                        <span class="roadmap-tag">TENANT_ADMIN</span>
+                        <span class="roadmap-tag">BRANCH_MANAGER</span>
+                        <span class="roadmap-tag">TECHNICIAN</span>
+                        <span class="roadmap-tag">SALES</span>
+                        <span class="roadmap-tag">FINANCE</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon secondary"><i class="fas fa-globe"></i></div>
+                    <h3>Roles Globales</h3>
+                    <div style="margin-top: 1rem;">
+                        <span class="roadmap-tag">AMBASSADOR</span>
+                        <span class="roadmap-tag">LEADER</span>
+                        <span class="roadmap-tag">MENTOR</span>
+                        <span class="roadmap-tag">MODERATOR</span>
+                        <span class="roadmap-tag">INTERNAL_SUPPORT</span>
+                        <span class="roadmap-tag">SUPER_ADMIN</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon accent"><i class="fas fa-user"></i></div>
+                    <h3>Roles de Usuario</h3>
+                    <div style="margin-top: 1rem;">
+                        <span class="roadmap-tag">CLIENT</span>
+                        <span class="roadmap-tag">ENTERPRISE_CLIENT</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JWT Token -->
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Flujo de Autenticación JWT</h3>
+            <div class="code-block" style="margin-bottom: 3rem;">
+                <code>
+<span class="comment">// Estructura del Access Token (15 min)</span>
+{
+  "<span class="string">sub</span>": "<span class="string">user_id</span>",
+  "<span class="string">tenant_id</span>": "<span class="string">uuid</span>",
+  "<span class="string">branch_id</span>": "<span class="string">uuid</span>",
+  "<span class="string">roles</span>": ["<span class="type">TENANT_ADMIN</span>", "<span class="type">AMBASSADOR</span>"],
+  "<span class="string">scopes</span>": ["<span class="type">read:catalog</span>", "<span class="type">write:tickets</span>"]
+}
+
+<span class="comment">// Refresh Token: 7 días, almacenado en BD (revocable)</span>
+<span class="comment">// Cambio de contexto (switch tenant) regenera tokens</span>
+                </code>
+            </div>
+
+            <!-- Seguridad por Capas -->
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Capas de Seguridad</h3>
+            <div class="security-layers">
+                <div class="security-layer">
+                    <div class="security-number">1</div>
+                    <div class="security-content">
+                        <h4>Autenticación</h4>
+                        <ul>
+                            <li>JWT Access Token (15 min)</li>
+                            <li>Refresh Token (BD)</li>
+                            <li>MFA opcional</li>
+                            <li>Rate limiting</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="security-layer">
+                    <div class="security-number">2</div>
+                    <div class="security-content">
+                        <h4>Autorización</h4>
+                        <ul>
+                            <li>RBAC</li>
+                            <li>ABAC para reglas complejas</li>
+                            <li>Scopes granulares</li>
+                            <li>Validación tenant_id</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="security-layer">
+                    <div class="security-number">3</div>
+                    <div class="security-content">
+                        <h4>Aislamiento de Datos (RLS)</h4>
+                        <ul>
+                            <li>Row-Level Security PostgreSQL</li>
+                            <li>SET LOCAL app.tenant_id</li>
+                            <li>Políticas por tenant</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="security-layer">
+                    <div class="security-number">4</div>
+                    <div class="security-content">
+                        <h4>Auditoría</h4>
+                        <ul>
+                            <li>Log de acciones sensibles</li>
+                            <li>Quién, qué, cuándo, dónde</li>
+                            <li>Ledger inmutable</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="security-layer">
+                    <div class="security-number">5</div>
+                    <div class="security-content">
+                        <h4>Antifraude</h4>
+                        <ul>
+                            <li>Detección auto-invitaciones</li>
+                            <li>Patrones anómalos</li>
+                            <li>Validación dispositivos</li>
+                            <li>Alertas automáticas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catálogo -->
+    <section class="section" id="catalogo">
+        <div class="section-header">
+            <span class="tag">Productos</span>
+            <h2 class="section-title">Catálogo de Productos y Servicios</h2>
+            <p class="section-subtitle">Sistema dual de referencias globales y listings por tenant</p>
+        </div>
+
+        <!-- Arquitectura del Catálogo -->
+        <div class="workflow-container" style="margin-bottom: 3rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div style="text-align: center;">
+                    <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;"><i class="fas fa-globe"></i> REFERENCE (Global)</h4>
+                        <p style="font-size: 0.9rem; color: var(--gray);">catalog_reference_item</p>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+                        <span class="roadmap-tag">Specs estándar</span>
+                        <span class="roadmap-tag">Atributos</span>
+                        <span class="roadmap-tag">Marca/Modelo</span>
+                        <span class="roadmap-tag">Compatibilidad</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-arrows-alt-h" style="font-size: 2rem; color: var(--primary);"></i>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: var(--light); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                        <h4 style="color: var(--secondary); margin-bottom: 1rem;"><i class="fas fa-store"></i> LISTING (Por Tenant)</h4>
+                        <p style="font-size: 0.9rem; color: var(--gray);">catalog_listing</p>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+                        <span class="roadmap-tag">Precio</span>
+                        <span class="roadmap-tag">Stock</span>
+                        <span class="roadmap-tag">Condición</span>
+                        <span class="roadmap-tag">Garantía</span>
+                        <span class="roadmap-tag">Fotos</span>
+                        <span class="roadmap-tag">Sucursal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tipos de Catálogo -->
+        <div class="cards-grid" style="margin-bottom: 3rem;">
+            <div class="card">
+                <div class="card-icon primary"><i class="fas fa-laptop"></i></div>
+                <h3>PRODUCT</h3>
+                <p>Laptops, PCs, componentes, periféricos y dispositivos electrónicos completos.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon secondary"><i class="fas fa-wrench"></i></div>
+                <h3>SERVICE</h3>
+                <p>Diagnóstico, reparación, armado, instalación y mantenimiento técnico.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon accent"><i class="fas fa-cogs"></i></div>
+                <h3>PART</h3>
+                <p>Repuestos, pantallas, baterías, teclados y componentes individuales.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon danger"><i class="fas fa-shield-alt"></i></div>
+                <h3>WARRANTY</h3>
+                <p>Garantías extendidas, seguros y planes de protección.</p>
+            </div>
+        </div>
+
+        <!-- Atributos por Categoría -->
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Atributos por Categoría (TechMarket AI)</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Atributos Obligatorios</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong><i class="fas fa-microchip"></i> CPU</strong></td>
+                        <td>socket, generación, TDP, núcleos, threads</td>
+                    </tr>
+                    <tr>
+                        <td><strong><i class="fas fa-server"></i> Motherboard</strong></td>
+                        <td>socket, chipset, formato (ATX/mATX/ITX), slots RAM, PCIe</td>
+                    </tr>
+                    <tr>
+                        <td><strong><i class="fas fa-memory"></i> RAM</strong></td>
+                        <td>tipo (DDR4/DDR5), frecuencia, latencia, capacidad, kit</td>
+                    </tr>
+                    <tr>
+                        <td><strong><i class="fas fa-tv"></i> GPU</strong></td>
+                        <td>largo (mm), consumo (W), conectores, VRAM</td>
+                    </tr>
+                    <tr>
+                        <td><strong><i class="fas fa-plug"></i> PSU</strong></td>
+                        <td>watt real, certificación (80+), conectores modulares</td>
+                    </tr>
+                    <tr>
+                        <td><strong><i class="fas fa-wifi"></i> Router</strong></td>
+                        <td>estándar Wi-Fi, throughput, bandas, puertos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Tickets -->
+    <section class="section" id="tickets" style="background: var(--white); margin: 0; max-width: 100%; padding: 5rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <span class="tag">Soporte</span>
+                <h2 class="section-title">Sistema de Tickets y Soporte</h2>
+                <p class="section-subtitle">Workflow completo con triage IA, cotizaciones y carpeta técnica</p>
+            </div>
+
+            <!-- Workflow de Tickets -->
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Workflow de Estados</h3>
+            <div class="workflow-container" style="margin-bottom: 3rem;">
+                <div class="workflow-steps">
+                    <div class="workflow-step" style="background: var(--gray);">NEW</div>
+                    <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="workflow-step" style="background: var(--accent);">TRIAGE</div>
+                    <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="workflow-step">ASSIGNED</div>
+                    <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="workflow-step">IN_PROGRESS</div>
+                    <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="workflow-step" style="background: var(--accent);">QUOTED</div>
+                    <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="workflow-step" style="background: var(--secondary);">APPROVED</div>
+                    <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="workflow-step" style="background: var(--secondary-dark);">RESOLVED</div>
+                    <div class="workflow-arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="workflow-step" style="background: var(--dark);">CLOSED</div>
+                </div>
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <div class="workflow-branch">
+                        <span style="font-size: 0.75rem; color: var(--gray); margin-bottom: 0.5rem;">Estados alternativos:</span>
+                        <div class="workflow-branch-item">WAITING_CUSTOMER</div>
+                        <div class="workflow-branch-item">WAITING_PARTS</div>
+                        <div class="workflow-branch-item">REJECTED</div>
+                        <div class="workflow-branch-item">CANCELLED</div>
+                        <div class="workflow-branch-item">SPAM</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funcionalidades -->
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Funcionalidades del Ticket</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon primary"><i class="fas fa-robot"></i></div>
+                    <h3>Triage IA</h3>
+                    <p>Preguntas inteligentes y clasificación automática de tickets entrantes.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon secondary"><i class="fas fa-user-check"></i></div>
+                    <h3>Asignación</h3>
+                    <p>Asignación a técnico específico o equipo según especialidad.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon accent"><i class="fas fa-clock"></i></div>
+                    <h3>SLA</h3>
+                    <p>Tiempo de primera respuesta y tiempo de resolución configurable.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon danger"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <h3>Cotización</h3>
+                    <p>Items de servicios + repuestos con aprobación del cliente.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon primary"><i class="fas fa-paperclip"></i></div>
+                    <h3>Attachments</h3>
+                    <p>Fotos y videos como evidencia del problema y solución.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon secondary"><i class="fas fa-folder-open"></i></div>
+                    <h3>Carpeta Técnica</h3>
+                    <p>Historial completo del equipo con todas las intervenciones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motor IA -->
+    <section class="section" id="ia">
+        <div class="section-header">
+            <span class="tag">Inteligencia</span>
+            <h2 class="section-title">Motor de IA</h2>
+            <p class="section-subtitle">IA que genera valor real: comenzamos con reglas inteligentes, evolucionamos con datos</p>
+        </div>
+
+        <!-- Features por Prioridad -->
+        <div class="ia-features">
+            <div class="ia-feature">
+                <div class="ia-feature-header high">
+                    <i class="fas fa-star"></i>
+                    <h4>PRIORIDAD ALTA (MVP - V1)</h4>
+                </div>
+                <div class="ia-feature-body">
+                    <div class="ia-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Recomendaciones contextuales (hora, clima, ubicación)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Rankings locales dinámicos ("Top Equipetrol ahora")</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Optimización de gasto (alternativas económicas)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Predicción de demanda (picos por día/hora)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Análisis de platos rentables (margen vs volumen)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Zonas calientes para conductores (mapas de calor)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Oportunidades detectadas para embajadores</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ia-feature">
+                <div class="ia-feature-header medium">
+                    <i class="fas fa-clock"></i>
+                    <h4>PRIORIDAD MEDIA (V2 / Premium)</h4>
+                </div>
+                <div class="ia-feature-body">
+                    <div class="ia-feature-item">
+                        <i class="fas fa-minus"></i>
+                        <span>Sugerencias de promociones automáticas</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-minus"></i>
+                        <span>Combinación inteligente viaje/pedido</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-minus"></i>
+                        <span>Intent Search avanzado</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-minus"></i>
+                        <span>Diagnóstico preliminar IA para tickets</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ia-feature">
+                <div class="ia-feature-header excluded">
+                    <i class="fas fa-ban"></i>
+                    <h4>NO IMPLEMENTAR EN V1</h4>
+                </div>
+                <div class="ia-feature-body">
+                    <div class="ia-feature-item">
+                        <i class="fas fa-times"></i>
+                        <span>Chatbots conversacionales (no genera conversión)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-times"></i>
+                        <span>IA emocional / avatares (complejidad sin valor)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-times"></i>
+                        <span>Análisis financiero tipo ERP (overkill)</span>
+                    </div>
+                    <div class="ia-feature-item">
+                        <i class="fas fa-times"></i>
+                        <span>Gamificación compleja (refuerza estigma MLM)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arquitectura IA -->
+        <h3 style="font-size: 1.5rem; margin: 3rem 0 1.5rem;">Arquitectura del Motor IA</h3>
+        <div class="architecture-container">
+            <div class="architecture-diagram">
+                <div class="arch-layer">
+                    <div class="arch-layer-title"><i class="fas fa-brain"></i> Spring AI</div>
+                    <div class="arch-components">
+                        <div class="arch-component"><i class="fas fa-robot"></i> OpenAI (GPT-4)</div>
+                        <div class="arch-component"><i class="fas fa-server"></i> Ollama (Local)</div>
+                        <div class="arch-component"><i class="fas fa-vector-square"></i> Embeddings (pgvector)</div>
+                    </div>
+                </div>
+                <div class="arch-connector"><i class="fas fa-arrow-down"></i></div>
+                <div class="arch-layer">
+                    <div class="arch-layer-title"><i class="fas fa-cogs"></i> Casos de Uso IA</div>
+                    <div class="arch-components">
+                        <div class="arch-component"><i class="fas fa-search"></i> Intent Search</div>
+                        <div class="arch-component"><i class="fas fa-puzzle-piece"></i> Compatibilidad PC</div>
+                        <div class="arch-component"><i class="fas fa-clipboard-check"></i> Triage Tickets</div>
+                        <div class="arch-component"><i class="fas fa-thumbs-up"></i> Recomendaciones</div>
+                        <div class="arch-component"><i class="fas fa-chart-line"></i> Pricing/Anomalías</div>
+                        <div class="arch-component"><i class="fas fa-lightbulb"></i> Oportunidades</div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(99, 102, 241, 0.1); border-radius: 10px; text-align: center;">
+                <strong style="color: var(--primary);">Enfoque:</strong> Reglas inteligentes + ML ligero — <strong>"Comienza con heurísticas, evoluciona con datos"</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pantallas / Mockups -->
+    <section class="section" id="pantallas" style="background: var(--white); margin: 0; max-width: 100%; padding: 5rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <span class="tag">UX/UI</span>
+                <h2 class="section-title">Diseño de Pantallas</h2>
+                <p class="section-subtitle">Flujos de onboarding y backoffice del embajador</p>
+            </div>
+
+            <!-- Flujo de Onboarding -->
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Flujo de Onboarding - Embajador</h3>
+            <div class="process-steps" style="margin-bottom: 3rem;">
+                <div class="process-step">
+                    <div class="process-step-number">0</div>
+                    <h4>Entry Point</h4>
+                    <p>Detectar ref_id (link/QR/manual) y guardar en sesión</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">1</div>
+                    <h4>Registro Básico</h4>
+                    <p>Nombre, email, teléfono, contraseña</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">2</div>
+                    <h4>Verificación</h4>
+                    <p>Email (magic link) + Teléfono (OTP SMS)</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">3</div>
+                    <h4>Completar Perfil</h4>
+                    <p>Documento, ubicación, tipo de recomendación</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">4</div>
+                    <h4>Método de Pago</h4>
+                    <p>Cuenta bancaria o billetera digital</p>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-number">5</div>
+                    <h4>Bienvenida</h4>
+                    <p>Explicación del programa (sin estigma MLM)</p>
+                </div>
+            </div>
+
+            <!-- Mockups de Pantallas -->
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Pantallas del Backoffice Embajador</h3>
+            <div class="mockups-grid">
+                <!-- Dashboard -->
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span style="opacity: 0.8;">Hola, Juan</span>
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 style="margin-top: 0.5rem;">Dashboard</h3>
+                        </div>
+                        <div class="phone-content">
+                            <div class="metric-card">
+                                <div>
+                                    <div class="metric-value">Bs 24,500</div>
+                                    <div class="metric-label">Impacto Total</div>
+                                    <div class="metric-change">↑ 18% vs mes anterior</div>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <div>
+                                    <div class="metric-value">Bs 1,230</div>
+                                    <div class="metric-label">Ingresos del Mes</div>
+                                    <div class="metric-change">↑ 12% vs mes anterior</div>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <div>
+                                    <div class="metric-value">3 días</div>
+                                    <div class="metric-label">Próximo Cierre</div>
+                                    <div class="metric-change">Lun 15/03</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                                <span style="background: var(--light); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem;">🍽️ 4 Rest.</span>
+                                <span style="background: var(--light); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem;">🚗 7 Cond.</span>
+                                <span style="background: var(--light); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem;">👤 23 Usr.</span>
+                            </div>
+                            <div style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                                <p style="font-size: 0.85rem; color: var(--primary);">💡 <strong>Insight IA:</strong> Tu impacto creció 18% respecto al mes pasado.</p>
+                            </div>
+                        </div>
+                        <div class="phone-nav">
+                            <div class="phone-nav-item active"><i class="fas fa-home"></i><span>Inicio</span></div>
+                            <div class="phone-nav-item"><i class="fas fa-chart-bar"></i><span>Impacto</span></div>
+                            <div class="phone-nav-item"><i class="fas fa-bullseye"></i><span>Misiones</span></div>
+                            <div class="phone-nav-item"><i class="fas fa-book"></i><span>Educación</span></div>
+                            <div class="phone-nav-item"><i class="fas fa-cog"></i><span>Más</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invitar -->
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <i class="fas fa-arrow-left"></i>
+                                <h3 style="margin: 0;">Invitar / Recomendar</h3>
+                            </div>
+                        </div>
+                        <div class="phone-content">
+                            <p style="font-size: 0.9rem; color: var(--gray); margin-bottom: 1.5rem;">Comparte tu enlace exclusivo para que tus recomendaciones se atribuyan automáticamente</p>
+                            
+                            <div style="background: var(--light); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                                <p style="font-size: 0.8rem; color: var(--gray); margin-bottom: 0.5rem;">🔗 Tu enlace personal</p>
+                                <div style="background: var(--white); padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; word-break: break-all;">
+                                    https://app.example.com/r/AF-12345
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                                    <button style="flex: 1; padding: 0.5rem; background: var(--primary); color: white; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">📋 Copiar</button>
+                                    <button style="flex: 1; padding: 0.5rem; background: var(--secondary); color: white; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">📤 Compartir</button>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--light); padding: 1.5rem; border-radius: 10px; text-align: center; margin-bottom: 1rem;">
+                                <p style="font-size: 0.8rem; color: var(--gray); margin-bottom: 1rem;">📱 Tu código QR</p>
+                                <div style="width: 120px; height: 120px; background: var(--white); margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                    <i class="fas fa-qrcode" style="font-size: 4rem; color: var(--dark);"></i>
+                                </div>
+                                <p style="font-weight: 600; margin-top: 0.75rem;">AF-12345</p>
+                            </div>
+
+                            <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 10px; font-size: 0.8rem; color: var(--accent);">
+                                ℹ️ Las recomendaciones se atribuyen automáticamente cuando se usa tu enlace o QR. La atribución no puede modificarse.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oportunidades IA -->
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <h3 style="margin: 0;">Oportunidades</h3>
+                                </div>
+                                <i class="fas fa-filter"></i>
+                            </div>
+                        </div>
+                        <div class="phone-content">
+                            <p style="font-size: 0.85rem; color: var(--gray); margin-bottom: 1rem;">Sugerencias basadas en datos reales del ecosistema</p>
+                            
+                            <div style="background: var(--white); border: 1px solid var(--light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                                <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div>
+                                        <span style="font-size: 0.75rem; color: var(--secondary); background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.5rem; border-radius: 4px;">Potencial: Alto</span>
+                                        <h4 style="margin: 0.5rem 0; font-size: 0.95rem;">🍽️ Zona Equipetrol</h4>
+                                        <p style="font-size: 0.8rem; color: var(--gray);">Alta demanda de pedidos nocturnos sin restaurantes afiliados</p>
+                                    </div>
+                                    <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                                    <button style="padding: 0.4rem 0.8rem; background: transparent; border: 1px solid var(--gray-light); border-radius: 6px; font-size: 0.75rem; cursor: pointer;">⭐ Guardar</button>
+                                    <button style="padding: 0.4rem 0.8rem; background: transparent; border: 1px solid var(--gray-light); border-radius: 6px; font-size: 0.75rem; cursor: pointer;">✓ Ya lo atendí</button>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--white); border: 1px solid var(--light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                                <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div>
+                                        <span style="font-size: 0.75rem; color: var(--accent); background: rgba(245, 158, 11, 0.1); padding: 0.25rem 0.5rem; border-radius: 4px;">Potencial: Medio</span>
+                                        <h4 style="margin: 0.5rem 0; font-size: 0.95rem;">🚗 Zona Plan 3000</h4>
+                                        <p style="font-size: 0.8rem; color: var(--gray);">Baja cobertura de conductores en horarios matutinos</p>
+                                    </div>
+                                    <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--white); border: 1px solid var(--light); border-radius: 12px; padding: 1rem; box-shadow: var(--shadow-sm);">
+                                <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div>
+                                        <span style="font-size: 0.75rem; color: var(--secondary); background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.5rem; border-radius: 4px;">Potencial: Alto</span>
+                                        <h4 style="margin: 0.5rem 0; font-size: 0.95rem;">🍽️ "El Buen Sabor"</h4>
+                                        <p style="font-size: 0.8rem; color: var(--gray);">Restaurante popular sin presencia en plataforma</p>
+                                    </div>
+                                    <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modelo de Datos -->
+    <section class="section" id="modelo-datos">
+        <div class="section-header">
+            <span class="tag">Base de Datos</span>
+            <h2 class="section-title">Modelo de Datos</h2>
+            <p class="section-subtitle">Distribución entre PostgreSQL, MongoDB y Redis</p>
+        </div>
+
+        <!-- Distribución -->
+        <div class="cards-grid" style="margin-bottom: 3rem;">
+            <div class="card">
+                <div class="card-icon primary"><i class="fas fa-database"></i></div>
+                <h3>PostgreSQL + RLS</h3>
+                <p>Tenants, usuarios, catálogo, tickets, embajadores, transacciones, ledger financiero, audit logs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon secondary"><i class="fas fa-leaf"></i></div>
+                <h3>MongoDB</h3>
+                <p>Media, documentos de verificación, contenido educativo, conversaciones, evidencias.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon accent"><i class="fas fa-bolt"></i></div>
+                <h3>Redis</h3>
+                <p>Sesiones, cache de búsquedas, rate limiting, contadores en tiempo real, colas de jobs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon danger"><i class="fas fa-vector-square"></i></div>
+                <h3>pgvector</h3>
+                <p>Embeddings de productos, embeddings de búsquedas, vectores de compatibilidad.</p>
+            </div>
+        </div>
+
+        <!-- Entidades Principales -->
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Entidades Principales</h3>
+        <div class="er-diagram">
+            <div class="er-entities">
+                <div class="er-entity">
+                    <div class="er-entity-header">TENANT (Negocio)</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name">name</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">slug</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">status</span><span class="er-field-type">ENUM</span></div>
+                        <div class="er-field"><span class="er-field-name">verification_level</span><span class="er-field-type">VARCHAR</span></div>
+                    </div>
+                </div>
+                <div class="er-entity">
+                    <div class="er-entity-header">USER_ACCOUNT</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name">email</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">phone</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">password_hash</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">status</span><span class="er-field-type">ENUM</span></div>
+                    </div>
+                </div>
+                <div class="er-entity">
+                    <div class="er-entity-header">TENANT_MEMBERSHIP</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">user_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">tenant_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name">role</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">status</span><span class="er-field-type">ENUM</span></div>
+                    </div>
+                </div>
+                <div class="er-entity">
+                    <div class="er-entity-header">CATALOG_LISTING</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">tenant_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">reference_item_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name">type</span><span class="er-field-type">ENUM</span></div>
+                        <div class="er-field"><span class="er-field-name">status</span><span class="er-field-type">ENUM</span></div>
+                    </div>
+                </div>
+                <div class="er-entity">
+                    <div class="er-entity-header">TICKET</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">tenant_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">customer_user_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name">status</span><span class="er-field-type">ENUM</span></div>
+                        <div class="er-field"><span class="er-field-name">priority</span><span class="er-field-type">ENUM</span></div>
+                    </div>
+                </div>
+                <div class="er-entity">
+                    <div class="er-entity-header">AMBASSADOR_COMMISSION</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">ambassador_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name">level</span><span class="er-field-type">INT</span></div>
+                        <div class="er-field"><span class="er-field-name">amount</span><span class="er-field-type">DECIMAL</span></div>
+                        <div class="er-field"><span class="er-field-name">status</span><span class="er-field-type">ENUM</span></div>
+                    </div>
+                </div>
+                <div class="er-entity">
+                    <div class="er-entity-header">LEDGER_ENTRY</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">tenant_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name">type</span><span class="er-field-type">ENUM</span></div>
+                        <div class="er-field"><span class="er-field-name">amount</span><span class="er-field-type">DECIMAL</span></div>
+                        <div class="er-field"><span class="er-field-name">balance_after</span><span class="er-field-type">DECIMAL</span></div>
+                    </div>
+                </div>
+                <div class="er-entity">
+                    <div class="er-entity-header">AUDIT_LOG</div>
+                    <div class="er-entity-fields">
+                        <div class="er-field"><span class="er-field-name er-pk">id</span><span class="er-field-type">UUID PK</span></div>
+                        <div class="er-field"><span class="er-field-name er-fk">user_id</span><span class="er-field-type">UUID FK</span></div>
+                        <div class="er-field"><span class="er-field-name">action</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">entity_type</span><span class="er-field-type">VARCHAR</span></div>
+                        <div class="er-field"><span class="er-field-name">ip_address</span><span class="er-field-type">INET</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="section" id="roadmap" style="background: var(--white); margin: 0; max-width: 100%; padding: 5rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <span class="tag">Planificación</span>
+                <h2 class="section-title">Roadmap de Implementación</h2>
+                <p class="section-subtitle">90-180 días para el MVP completo</p>
+            </div>
+
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <div class="roadmap-phase">Fase 0 — Semanas 1-2</div>
+                    <div class="roadmap-title">Fundamentos</div>
+                    <div class="roadmap-items">
+                        <span class="roadmap-tag">IAM (login, roles, JWT)</span>
+                        <span class="roadmap-tag">Multi-tenant + RLS</span>
+                        <span class="roadmap-tag">BD operativa</span>
+                        <span class="roadmap-tag">Skeleton apps</span>
+                        <span class="roadmap-tag">CI/CD básico</span>
+                    </div>
+                    <div class="roadmap-success"><i class="fas fa-check-circle"></i> Éxito: Aislamiento cross-tenant probado</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-phase">Fase 1 — Semanas 3-6</div>
+                    <div class="roadmap-title">MVP Negocio</div>
+                    <div class="roadmap-items">
+                        <span class="roadmap-tag">Registro tenant + sucursal</span>
+                        <span class="roadmap-tag">Verificación mínima</span>
+                        <span class="roadmap-tag">Catálogo listings</span>
+                        <span class="roadmap-tag">App cliente</span>
+                        <span class="roadmap-tag">Dashboard propietario</span>
+                    </div>
+                    <div class="roadmap-success"><i class="fas fa-check-circle"></i> Éxito: Usuario encuentra negocio y contacta</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-phase">Fase 2 — Semanas 7-10</div>
+                    <div class="roadmap-title">Operación</div>
+                    <div class="roadmap-items">
+                        <span class="roadmap-tag">Tickets con workflow</span>
+                        <span class="roadmap-tag">Attachments/evidencias</span>
+                        <span class="roadmap-tag">Cotizaciones</span>
+                        <span class="roadmap-tag">Notificaciones</span>
+                    </div>
+                    <div class="roadmap-success"><i class="fas fa-check-circle"></i> Éxito: Tickets cerrados correctamente</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-phase">Fase 3 — Semanas 11-14</div>
+                    <div class="roadmap-title">IA Core</div>
+                    <div class="roadmap-items">
+                        <span class="roadmap-tag">Intent search</span>
+                        <span class="roadmap-tag">Ranking híbrido</span>
+                        <span class="roadmap-tag">Recomendaciones</span>
+                        <span class="roadmap-tag">Oportunidades detectadas</span>
+                    </div>
+                    <div class="roadmap-success"><i class="fas fa-check-circle"></i> Éxito: Mejora CTR vs búsqueda tradicional</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-phase">Fase 4 — Semanas 15-18</div>
+                    <div class="roadmap-title">Monetización</div>
+                    <div class="roadmap-items">
+                        <span class="roadmap-tag">Suscripción premium</span>
+                        <span class="roadmap-tag">Invoices/facturación</span>
+                        <span class="roadmap-tag">Performance charges</span>
+                    </div>
+                    <div class="roadmap-success"><i class="fas fa-check-circle"></i> Éxito: Ingresos recurrentes activos</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-phase">Fase 5 — Semanas 19-22</div>
+                    <div class="roadmap-title">Embajadores</div>
+                    <div class="roadmap-items">
+                        <span class="roadmap-tag">Atribución completa</span>
+                        <span class="roadmap-tag">Comisiones event-driven</span>
+                        <span class="roadmap-tag">Payout cycles</span>
+                        <span class="roadmap-tag">Antifraude</span>
+                    </div>
+                    <div class="roadmap-success"><i class="fas fa-check-circle"></i> Éxito: Embajadores cobrando correctamente</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-phase">Fase 6 — Semanas 23+</div>
+                    <div class="roadmap-title">Escala</div>
+                    <div class="roadmap-items">
+                        <span class="roadmap-tag">Backoffice admin</span>
+                        <span class="roadmap-tag">Analytics dashboards</span>
+                        <span class="roadmap-tag">Moderación avanzada</span>
+                        <span class="roadmap-tag">Expansión geográfica</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="section" id="kpis">
+        <div class="section-header">
+            <span class="tag">Métricas</span>
+            <h2 class="section-title">KPIs y Métricas de Éxito</h2>
+            <p class="section-subtitle">Indicadores clave para el seguimiento del proyecto</p>
+        </div>
+
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--primary);"><i class="fas fa-building"></i> KPIs de Negocio</h3>
+        <div class="kpis-grid" style="margin-bottom: 2rem;">
+            <div class="kpi-card">
+                <div class="kpi-value">100+</div>
+                <div class="kpi-label">Negocios Activos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">500/mes</div>
+                <div class="kpi-label">Leads Generados</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">200/mes</div>
+                <div class="kpi-label">Tickets Creados</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">&gt;80%</div>
+                <div class="kpi-label">Tasa Respuesta &lt;24h</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">20%+</div>
+                <div class="kpi-label">Premium Mensual</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">&gt;30</div>
+                <div class="kpi-label">NPS</div>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--secondary);"><i class="fas fa-users"></i> KPIs de Embajadores</h3>
+        <div class="kpis-grid" style="margin-bottom: 2rem;">
+            <div class="kpi-card">
+                <div class="kpi-value">50+</div>
+                <div class="kpi-label">Embajadores Activos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">3+</div>
+                <div class="kpi-label">Registros/Embajador</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">&gt;60%</div>
+                <div class="kpi-label">Tasa Activación</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">&gt;70%</div>
+                <div class="kpi-label">Retención Mensual</div>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--accent);"><i class="fas fa-server"></i> KPIs Técnicos</h3>
+        <div class="kpis-grid">
+            <div class="kpi-card">
+                <div class="kpi-value">99.5%+</div>
+                <div class="kpi-label">Uptime</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">&lt;500ms</div>
+                <div class="kpi-label">Response P95</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">&lt;0.1%</div>
+                <div class="kpi-label">Error Rate</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">2+/sem</div>
+                <div class="kpi-label">Deploy Frequency</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">&lt;1 día</div>
+                <div class="kpi-label">Lead Time</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checklist -->
+    <section class="section" style="background: var(--white); margin: 0; max-width: 100%; padding: 5rem 2rem;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <span class="tag">Control</span>
+                <h2 class="section-title">Checklist de Implementación</h2>
+            </div>
+
+            <div class="checklist">
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>IAM + Multi-tenant configurado</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>RLS activado en todas las tablas</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Flujo onboarding embajador completo</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Sistema atribución automática (link/QR)</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Cálculo comisiones 3 niveles</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Ledger financiero inmutable</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Dashboard embajador (6 pantallas)</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Sistema tickets con workflow</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Catálogo con categorías y atributos</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Motor búsqueda con IA básica</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Notificaciones (push/email/WhatsApp)</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Backoffice admin</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Antifraude básico</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Exportación de reportes</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>Centro de ayuda y FAQs</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Diseño Preliminar Completo</h3>
+            <p>Este documento consolida todos los requisitos de los documentos proporcionados y sirve como guía técnica y funcional para el desarrollo del proyecto.</p>
+            
+            <div class="footer-meta">
+                <span><i class="fas fa-file-alt"></i> Versión 1.0</span>
+                <span><i class="fas fa-calendar"></i> Febrero 2026</span>
+                <span><i class="fas fa-clipboard-check"></i> Estado: Diseño Preliminar</span>
+                <span><i class="fas fa-rocket"></i> Lanzamiento: Abril 2026</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navegación activa
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Animaciones al scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card, .roadmap-item, .kpi-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
