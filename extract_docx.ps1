@@ -12,7 +12,7 @@ if ($entry) {
     $reader.Close()
     $stream.Close()
     
-    # Remove XML tags and clean updd
+    # Remove XML tags and clean upd
     $text = $content -replace '<[^>]+>', ' '
     $text = $text -replace '\s+', ' '
     $text.Trim() | Out-File $outputPath -Encoding UTF8
